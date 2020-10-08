@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">NFC Tools</string>
+    <string name="et_digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+</resources>
