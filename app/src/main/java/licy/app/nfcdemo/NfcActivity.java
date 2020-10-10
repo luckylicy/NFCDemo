@@ -90,6 +90,11 @@ public class NfcActivity extends AppCompatActivity {
                 } else {
                     trim = StringUtil.fillRight(trim, " ", 16);
                     byte[] bytes = trim.getBytes(StandardCharsets.UTF_8);
+                    // 清除第二块区的数据
+                    String empty = StringUtil.fillRight("", " ", 16);
+                    byte[] bytesEmpty = empty.getBytes(StandardCharsets.UTF_8);
+                    M1CardUtils.writeBlock(mTag, 2, bytesEmpty);
+
                     if (M1CardUtils.writeBlock(mTag, 1, bytes)) {
                         Log.e("M1CardUtils", "写入成功");
                         Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
