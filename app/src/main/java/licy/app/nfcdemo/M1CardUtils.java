@@ -186,7 +186,6 @@ public class M1CardUtils {
             mifareClassic.connect();
             if (m1Auth(mifareClassic, block/4)) {
                 mifareClassic.writeBlock(block, blockbyte);
-                Log.e(TAG, "写入成功");
             } else {
                 Log.e(TAG, "没有找到密码");
                 return false;

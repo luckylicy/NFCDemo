@@ -1,37 +1,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="12dp">
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/et_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:gravity="start|top"
         android:digits="@string/et_digits"
+        android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:maxLength="32" />
+        android:maxLength="32"
+        android:minHeight="40dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp" />
 
-<!--    <RadioGroup-->
-<!--        android:id="@+id/rg_index"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical">-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/rb_index1"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:text="第一扇区 index 1" />-->
-
-<!--        <RadioButton-->
-<!--            android:id="@+id/rb_index2"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:text="第一扇区 index 2" />-->
-<!--    </RadioGroup>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,22 +25,87 @@
 
         <Button
             android:id="@+id/btn_read"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_weight="1"
             android:text="读取数据" />
 
         <Button
             android:id="@+id/btn_write"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
+            android:layout_weight="1"
             android:text="写卡数据" />
+
+        <Button
+            android:id="@+id/btn_get_dict"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="刷新字典" />
 
     </LinearLayout>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:scrollbars="vertical"
+        android:text="NFC标签现有数据："
+        android:textColor="@android:color/black" />
+
+    <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:scrollbars="vertical"
+        android:text=""
+        android:textColor="@android:color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_stroke"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="卒中"
+            android:textColor="@android:color/black"
+            android:textSize="13dp" />
+
+        <Button
+            android:id="@+id/btn_chest_pain"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="胸痛"
+            android:textColor="@android:color/black"
+            android:textSize="13dp" />
+
+        <Button
+            android:id="@+id/btn_trauma"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="创伤"
+            android:textColor="@android:color/black"
+            android:textSize="13dp" />
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dict"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        tools:itemCount="3"
+        tools:listitem="@layout/adapter_rv_dict" />
 
 </LinearLayout>

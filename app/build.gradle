@@ -8,8 +8,8 @@ android {
         applicationId "licy.app.nfcdemo"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 210
-        versionName "2.1.0"
+        versionCode 230
+        versionName "2.3.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,9 +33,32 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
-    testImplementation 'junit:junit:4.12'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // flow-layout  流式布局
+    // https://github.com/hongyangAndroid/FlowLayout
+    implementation 'com.hyman:flowlayout-lib:1.1.2'
+    //okhttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+    implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
+    //retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
+    // BRVAH RecycleView adapter
+    // https://github.com/CymChad/BaseRecyclerViewAdapterHelper
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
+
+    // MMKV 腾讯开源shared preference替代库
+    // https://github.com/tencent/mmkv
+    implementation 'com.tencent:mmkv-static:1.2.2'
+    // lottie
+    // https://github.com/airbnb/lottie-android
+    implementation 'com.airbnb.android:lottie:3.4.2'
 }
