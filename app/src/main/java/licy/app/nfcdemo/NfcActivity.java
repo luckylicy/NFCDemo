@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -90,40 +91,81 @@ public class NfcActivity extends AppCompatActivity {
     private void writeToNfc(String content) {
         try {
 
-            if (content.length() >= 16) {
-                String first = content.substring(0, 16);
-                byte[] bytesFirst = first.getBytes(StandardCharsets.UTF_8);
-                boolean boolFirst = M1CardUtils.writeBlock(mTag, 1, bytesFirst);
+            if (!TextUtils.isEmpty(content)) {
 
-                String second = content.substring(16);
-                second = StringUtil.fillRight(second, " ", 16);
-                byte[] bytesSecond = second.getBytes(StandardCharsets.UTF_8);
-                boolean boolSecond = M1CardUtils.writeBlock(mTag, 2, bytesSecond);
-                if (boolFirst && boolSecond) {
-                    mActivityMainBinding.tvContent.setText(content);
-                    Log.e("M1CardUtils", "写入成功");
-                    Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e("M1CardUtils", "写入失败");
-                    Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                content = StringUtil.fillRight(content, " ", 16);
-                byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
-                // 清除第二块区的数据
-                String empty = StringUtil.fillRight("", " ", 16);
-                byte[] bytesEmpty = empty.getBytes(StandardCharsets.UTF_8);
-                M1CardUtils.writeBlock(mTag, 2, bytesEmpty);
+                List<String> array = new ArrayList<>();
 
-                if (M1CardUtils.writeBlock(mTag, 1, bytes)) {
-                    mActivityMainBinding.tvContent.setText(content);
-                    Log.e("M1CardUtils", "写入成功");
-                    Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.e("M1CardUtils", "写入失败");
-                    Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
+                int length = content.length();
+                int arraySize = length / 16;
+                if (arraySize > 15) {
+                    Log.e("M1CardUtils", "待写入数据超过可写入长度");
+                    Toast.makeText(this, "待写入数据超过可写入长度", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                for (int i = 0; i < arraySize; i++) {
+                    String blockContent = content.substring(i * 16, (i + 1) * 16);
+                    byte[] bytes = blockContent.getBytes(StandardCharsets.UTF_8);
+                    boolean result = M1CardUtils.writeBlock(mTag, i + 1, bytes);
+                    if (!result) {
+                        Log.e("M1CardUtils", "写入失败");
+                        Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                int lastContentLength = length % 16;
+                if (lastContentLength > 0) {
+                    String blockContent = StringUtil.fillRight(content.substring(arraySize * 16), " ", 16);
+                    byte[] bytes = blockContent.getBytes(StandardCharsets.UTF_8);
+                    boolean result = M1CardUtils.writeBlock(mTag, arraySize + 1, bytes);
+                    if (result) {
+                        mActivityMainBinding.tvContent.setText(content);
+                        Log.e("M1CardUtils", "写入成功");
+                        Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.e("M1CardUtils", "写入失败");
+                        Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
             }
+
+
+//            if (content.length() >= 16) {
+//                String first = content.substring(0, 16);
+//                byte[] bytesFirst = first.getBytes(StandardCharsets.UTF_8);
+//                boolean boolFirst = M1CardUtils.writeBlock(mTag, 1, bytesFirst);
+//
+//                String second = content.substring(16);
+//                second = StringUtil.fillRight(second, " ", 16);
+//                byte[] bytesSecond = second.getBytes(StandardCharsets.UTF_8);
+//                boolean boolSecond = M1CardUtils.writeBlock(mTag, 2, bytesSecond);
+//                if (boolFirst && boolSecond) {
+//                    mActivityMainBinding.tvContent.setText(content);
+//                    Log.e("M1CardUtils", "写入成功");
+//                    Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Log.e("M1CardUtils", "写入失败");
+//                    Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
+//                }
+//            } else {
+//                content = StringUtil.fillRight(content, " ", 16);
+//                byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
+//                // 清除第二块区的数据
+//                String empty = StringUtil.fillRight("", " ", 16);
+//                byte[] bytesEmpty = empty.getBytes(StandardCharsets.UTF_8);
+//                M1CardUtils.writeBlock(mTag, 2, bytesEmpty);
+//
+//                if (M1CardUtils.writeBlock(mTag, 1, bytes)) {
+//                    mActivityMainBinding.tvContent.setText(content);
+//                    Log.e("M1CardUtils", "写入成功");
+//                    Toast.makeText(this, "写入成功", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Log.e("M1CardUtils", "写入失败");
+//                    Toast.makeText(this, "写入失败", Toast.LENGTH_SHORT).show();
+//                }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(this, "请保持NFC标签与手机紧贴~", Toast.LENGTH_SHORT).show();

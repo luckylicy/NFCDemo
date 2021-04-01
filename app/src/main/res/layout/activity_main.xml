@@ -11,7 +11,7 @@
         android:digits="@string/et_digits"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:maxLength="32"
+        android:maxLength="255"
         android:minHeight="40dp"
         android:paddingStart="12dp"
         android:paddingEnd="12dp" />

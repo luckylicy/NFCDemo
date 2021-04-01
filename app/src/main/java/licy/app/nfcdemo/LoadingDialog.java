@@ -96,6 +96,8 @@ public class LoadingDialog extends Dialog {
         public LoadingDialog create() {
 
             LayoutInflater inflater = LayoutInflater.from(context);
+
+
             View view = inflater.inflate(R.layout.dialog_loading, null);
             // 设置带自定义主题的dialog
             LoadingDialog loadingDailog = new LoadingDialog(context, R.style.XyjLoadingDialogStyle);
