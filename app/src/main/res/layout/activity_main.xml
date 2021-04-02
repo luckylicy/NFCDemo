@@ -4,17 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
+    <licy.app.nfcdemo.ClearEditText
         android:id="@+id/et_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:digits="@string/et_digits"
         android:gravity="start|top"
         android:inputType="textMultiLine"
-        android:maxLength="255"
+        android:maxLength="80"
         android:minHeight="40dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp" />
+        android:padding="12dp" />
 
 
     <LinearLayout
@@ -38,11 +37,11 @@
             android:text="写卡数据" />
 
         <Button
-            android:id="@+id/btn_get_dict"
+            android:id="@+id/btn_clear_card_data"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"
-            android:text="刷新字典" />
+            android:text="清除卡数据" />
 
     </LinearLayout>
 
@@ -58,8 +57,10 @@
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
+        android:minHeight="40dp"
+        android:padding="12dp"
         android:scrollbars="vertical"
         android:text=""
         android:textColor="@android:color/black" />

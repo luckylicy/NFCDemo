@@ -10,6 +10,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 /**
@@ -114,6 +115,7 @@ public class M1CardUtils {
             String[][] metaInfo = new String[16][4];
             // 获取TAG中包含的扇区数
             int sectorCount = mifareClassic.getSectorCount();
+            Log.e(TAG, Arrays.toString(MifareClassic.KEY_DEFAULT));
             for (int j = 0; j < sectorCount; j++) {
                 int bCount;//当前扇区的块数
                 int bIndex;//当前扇区第一块
@@ -124,7 +126,7 @@ public class M1CardUtils {
                         byte[] data = mifareClassic.readBlock(bIndex);
                         String dataString = bytesToHexString(data);
                         metaInfo[j][i] = dataString;
-                        Log.e(TAG, new String(data));
+                        Log.e(TAG, Arrays.toString(data));
                         bIndex++;
                     }
                 } else {
@@ -184,7 +186,7 @@ public class M1CardUtils {
         MifareClassic mifareClassic = MifareClassic.get(tag);
         try {
             mifareClassic.connect();
-            if (m1Auth(mifareClassic, block/4)) {
+            if (m1Auth(mifareClassic, block / 4)) {
                 mifareClassic.writeBlock(block, blockbyte);
             } else {
                 Log.e(TAG, "没有找到密码");

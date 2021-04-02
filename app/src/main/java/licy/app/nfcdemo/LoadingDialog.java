@@ -2,6 +2,7 @@ package licy.app.nfcdemo;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -17,6 +18,27 @@ import androidx.annotation.Nullable;
  * email ：licy3051@qq.com
  */
 public class LoadingDialog extends Dialog {
+
+    private boolean isTimerFinish = false;
+    private boolean isCallDismiss = false;
+
+    private CountDownTimer mCountDownTimer = new CountDownTimer(100, 100) {
+        @Override
+        public void onTick(long millisUntilFinished) {
+
+        }
+
+        @Override
+        public void onFinish() {
+            synchronized (LoadingDialog.this) {
+                isTimerFinish = true;
+                if (isCallDismiss) {
+                    dismiss();
+                }
+            }
+        }
+    };
+
     public LoadingDialog(@NonNull Context context) {
         super(context);
     }
@@ -27,6 +49,22 @@ public class LoadingDialog extends Dialog {
 
     public LoadingDialog(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        mCountDownTimer.start();
+    }
+
+    @Override
+    public void dismiss() {
+        synchronized (LoadingDialog.this) {
+            isCallDismiss = true;
+            if (isTimerFinish) {
+                super.dismiss();
+            }
+        }
     }
 
     /**
