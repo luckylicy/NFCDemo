@@ -18,6 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.pgyer.pgyersdk.PgyerSDKManager;
+import com.pgyer.pgyersdk.callback.CheckoutVersionCallBack;
+import com.pgyer.pgyersdk.model.CheckSoftModel;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -97,17 +101,25 @@ public class NfcActivity extends AppCompatActivity {
             clearNfcData();
         });
 
-
+        new PgyUpdateManager.Builder()
+                //设置是否强制提示更新
+                .setForced(true)
+                // v3.0.4+ 以上同时可以在官网设置强制更新最高低版本；网站设置和代码设置一种情况成立则提示强制更新
+                //失败后是否提示重新下载
+                .setUserCanRetry(true)
+                // 检查更新前是否删除本地历史 Apk， 默认为true
+                .setDeleteHistroyApk(true)
+                .register();
     }
 
-    private void writeHead(){
+    private void writeHead() {
         byte[] bytesHead = {
                 (byte) 0xA5, (byte) 0x5F, (byte) 0x1F, (byte) 0xE2, (byte) 0x07, (byte) 0x08,
                 (byte) 0x04, (byte) 0x00, (byte) 0x62, (byte) 0x63, (byte) 0x64, (byte) 0x65,
                 (byte) 0x66, (byte) 0x67, (byte) 0x68, (byte) 0x69};
         try {
             boolean boolFirst = M1CardUtils.writeBlock(mTag, 0, bytesHead);
-            if (boolFirst ) {
+            if (boolFirst) {
                 mActivityMainBinding.tvContent.setText("");
                 Log.e("M1CardUtils", "清除成功");
                 Toast.makeText(this, "清除成功", Toast.LENGTH_SHORT).show();
